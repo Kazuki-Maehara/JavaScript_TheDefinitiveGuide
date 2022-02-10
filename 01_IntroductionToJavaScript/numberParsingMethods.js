@@ -1,0 +1,15 @@
+console.log(parseInt("3 blind mice"));
+console.log(parseInt(" 3.14 meters"));
+console.log(parseInt("-12.34"));
+console.log(parseInt("0xFF"));
+console.log(parseInt("0XFF"));
+console.log(parseInt("-0xFF"));
+console.log(parseFloat(".1"));
+console.log(parseInt("0.1"));
+console.log(parseInt(".1"));
+console.log(parseFloat("$72.47"));
+console.log(parseInt("11", 2));
+console.log(parseInt("ff", 16));
+console.log(parseInt("zz", 362));
+console.log(parseInt("077", 8));
+console.log(parseInt("077", 10));
