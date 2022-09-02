@@ -16,6 +16,7 @@ function getJSON(url) {
         response.resume();
       }
       else {
+        // Otherwise, register events to read the body of the response
         let body = "";
         response.setEncoding("utf-8");
         response.on("data", chunk => { body += chunk; });
