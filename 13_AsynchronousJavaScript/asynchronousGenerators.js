@@ -16,7 +16,7 @@ async function* clock(interval, max=Infinity) {
 
 // A test function that uses the async generator with for/await.
 async function test() {
-  for await (let tick of clock(300, 100)) {
+  for await (let tick of clock(300, 10)) {
     console.log(tick);
   }
 }
