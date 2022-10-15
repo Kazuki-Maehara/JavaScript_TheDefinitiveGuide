@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>
+    Test
+  </title>
+</head>
+
+<body>
+  Hello World!
+  <script>
+    // Return the plain-text content of element e, recursing int ochild elemtns.
+    // This method works like the texContent property.
+    function textContent(e) {
+      let s = "";
+      for (let child = e.firstChild; child !== null; child = child.nextSibling) {
+        let type = child.nodeType;
+        if (type === 3) {
+          s += child.nodeValue;
+        } else if (type === 1) {
+          s += textContent(child);
+        }
+      }
+      return s;
+    }
+    console.log(textContent(document));
+  </script>
+</body>
+
+</html>
