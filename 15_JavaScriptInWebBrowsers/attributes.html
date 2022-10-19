@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>
+    Test
+  </title>
+</head>
+
+<body>
+  <h2 id="title" data-section-number="16.1 and mambo jumbo">Attributes</h2>
+  <p class="testClass1 testClass2 andThirdclass">Hello World!</p>
+  <img src="image.jpg" alt="None" id="main_image">
+  <script>
+    let image =  document.querySelector("#main_image");
+    let url = image.src;
+    console.log(url);
+    console.log(image.id);
+
+    let para = document.querySelector("p");
+    console.log(para.classList);
+
+    let heading = document.querySelector("h2");
+    console.log(heading.dataset.sectionNumber);
+  </script>
+</body>
+
+</html>
