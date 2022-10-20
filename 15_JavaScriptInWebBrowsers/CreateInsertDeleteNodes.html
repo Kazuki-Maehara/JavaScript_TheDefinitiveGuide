@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>
+    Test
+  </title>
+</head>
+
+<body>
+
+  <h2 class="greetings">This is a sample greeting heading.</h2>
+  <script>
+    let paragraph = document.createElement("p");
+    let emphasis = document.createElement("em");
+    emphasis.append("World");
+    paragraph.append("Hello ", emphasis, "!");
+    paragraph.prepend("i");
+    console.log(paragraph.innerHTML);
+
+    // Find the heading element with class=greetings"
+    let greetings = document.querySelector("h2.greetings");
+
+    // Now insert the new paragraph and a horizontal rule after that heading.
+    greetings.after(paragraph, document.createElement("hr"));
+
+    // We inserted the paragraph after this element, but now we
+    // move it so it appears before the elemtnt instead.
+    greetings.before(paragraph);
+
+    // Make a copy of the paragraph and insert it after the greetings element.
+    greetings.after(paragraph.cloneNode(true));
+
+    // Removee the greetings element from the document and replace it with
+    // the paragraph elemtns (moving the paragraph from its current location)
+    // if it is already inserted into the document).
+    greetings.replaceWith(paragraph);
+
+    // And now remove the paragraph.
+    paragraph.remove();
+
+  </script>
+</body>
+
+</html>
