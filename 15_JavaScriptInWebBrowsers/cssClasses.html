@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>
+    Test
+  </title>
+  <style>
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <p class="hidden">The test paragraph!</p>
+  <script>
+    // Assume that this "p" element has class="hidden" in the HTML file.
+    // We can make it visible like this:
+
+    setTimeout(function() {
+      document.querySelector("p").classList.remove("hidden");
+      console.log(document.querySelector("p").classList);
+    }, 1000);
+
+    setTimeout(function() {
+      document.querySelector("p").classList.add("hidden");
+    }, 2000);
+
+
+  </script>
+</body>
+
+</html>
