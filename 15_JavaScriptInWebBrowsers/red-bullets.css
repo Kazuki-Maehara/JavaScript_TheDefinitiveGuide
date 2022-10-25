@@ -1,0 +1,8 @@
+ul#memo li {
+  list-style: none;
+}
+ul#memo li::before {
+  content: "***";
+  padding-right: 5px;
+  color: red;
+}
