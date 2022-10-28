@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>
+    Test
+  </title>
+  <style>
+    ul#memo li {
+      list-style: none;
+    }
+    ul#memo li::before {
+      content: "***";
+      padding-right: 5px;
+      color: red;
+    }
+  </style>
+</head>
+
+<body>
+  <ul id="memo">
+    <li>Item 1</li>
+    <li>Item 2</li>
+  </ul>
+
+  <script>
+    let list = document.querySelector("#memo");
+    // console.log(list);
+    let styles = window.getComputedStyle(list);
+    // console.log(styles);
+
+    let item1 = list.firstElementChild;
+    console.log(item1);
+    let beforeStyle = window.getComputedStyle(item1, "before");
+    console.log(beforeStyle.color);
+
+  </script>
+</body>
+
+</html>
