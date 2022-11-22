@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Drawing a pie chart with JavaScript and SVG</title>
+</head>
+
+<body>
+
+  <script>
+    // Create an <svg> element and draw a pie chart into it.
+    //
+    // This function expects an object argument with the following properties:
+    //
+    //   width, height: the size of the SVG graphic, in pixels
+    //   cx, cy, r: the center and radius of the pie
+    //   lx, ly: the upper-left corner of the chart legend
+    //   data: an object whose property names are data labels and whose
+    //     property values are the values associated with each label
+    //
+    // The function returns an <svg> element. The caller must insert it into
+    // the document in order to make it visible.
+    //
+
+
+    function pieChart(options) {
+      let {width, height, cs, cy, r, lx, ly, data} = options;
+
+      // This is the XML namespace for svg elements.
+      let svg = "http://www.w3.org/2000/svg";
+
+      // Create the <svg> element, and specify pixel size and user coordinates.
+      let chart = document.createElementNS(svg, "svg");
+      chart.setAttribute("width", width);
+      chart.setAttribute("height", height);
+      chart.setAttribute("viewBox", `0 0 ${width} ${height}`);
+
+      // Define the text styles we'll use for the chart. If we leave these
+      // values unset here, they can be set with CSS instead.
+      chart.setAttribute("font-family", "sans-serif");
+      chart.setAttribute("font-size", "18");
+
+
+
+    }
+
+  </script>
+</body>
+
+
+</html>
