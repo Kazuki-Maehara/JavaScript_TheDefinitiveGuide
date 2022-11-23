@@ -40,7 +40,38 @@
       chart.setAttribute("font-family", "sans-serif");
       chart.setAttribute("font-size", "18");
 
+      // Get labels and values as arrays and add up the values so we know how
+      // big the pie is.
+      let labels = Object.keys(data);
+      let values = Object.values(data);
+      let total = values.reduce((x,y) => x+y);
 
+      // Figure out the angles for all the slices. Slice i starts at angles[i]
+      // and ends at angles[i+1]. The angles are measured in radians.
+      let angles = [0];
+      values.forEach((x, i) => angles.push(angles[i] + x/total * 2 * Math.PI));
+
+      // Now loop through the slices of the pie
+      values.forEach((value, i) => {
+        // Compute the two points where our slice intersects the circle
+        // These formulas are chosen so that an angle of 0 is at 12 o'clock
+        // and positive angles increase clockwise.
+        let x1 = cx + r * Math.sin(angles[i]);
+        let y1 = cy - r * Math.cos(angles[i]);
+        let x2 = cx + r * Math.sin(angles[i+1]);
+        let y2 = cy - r * Math.cos(angles[i+1]);
+
+        // This is a flag for angles larger than a half circle.
+        // It is required by the SVG arc drawing component.
+        let big = (angles[i+1] - anglles[i] > Math.PI) ? 1 : 0;
+
+        // This string describes how to draw a slice of the pie char:
+        let path = `M${cx},${cy}` +       // Move to circle center.
+        `L${x1},${y1}` +                  // Draw line to (x1,y1).
+        `A${r},${r} 0 ${big} 1` +         // Draw an arc of radius r...
+        `${x2},${y2}` +                   // ...ending at to (x2,y2).
+        "Z";                              // Close path back to (cx,cy).
+      });
 
     }
 
