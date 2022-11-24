@@ -71,6 +71,15 @@
         `A${r},${r} 0 ${big} 1` +         // Draw an arc of radius r...
         `${x2},${y2}` +                   // ...ending at to (x2,y2).
         "Z";                              // Close path back to (cx,cy).
+
+        // Compute the CSS color for this slice. This formula works for only
+        // about 15 colors. So don't include more than 15 slices in a chart.
+        let color = `hsl(${(i*40)360},$90-3*i}%,${50+2*i}%)`;
+
+        // We describe a slice with a <path> element. Note createElementNS().
+        let slice = document.createElementNS(svg, "path");
+
+        
       });
 
     }
