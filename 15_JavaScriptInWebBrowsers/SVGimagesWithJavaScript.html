@@ -6,6 +6,7 @@
 </head>
 
 <body>
+  <div id="chart"></div>
 
   <script>
     // Create an <svg> element and draw a pie chart into it.
@@ -24,7 +25,7 @@
 
 
     function pieChart(options) {
-      let {width, height, cs, cy, r, lx, ly, data} = options;
+      let {width, height, cx, cy, r, lx, ly, data} = options;
 
       // This is the XML namespace for svg elements.
       let svg = "http://www.w3.org/2000/svg";
@@ -63,7 +64,7 @@
 
         // This is a flag for angles larger than a half circle.
         // It is required by the SVG arc drawing component.
-        let big = (angles[i+1] - anglles[i] > Math.PI) ? 1 : 0;
+        let big = (angles[i+1] - angles[i] > Math.PI) ? 1 : 0;
 
         // This string describes how to draw a slice of the pie char:
         let path = `M${cx},${cy}` +       // Move to circle center.
@@ -74,15 +75,63 @@
 
         // Compute the CSS color for this slice. This formula works for only
         // about 15 colors. So don't include more than 15 slices in a chart.
-        let color = `hsl(${(i*40)360},$90-3*i}%,${50+2*i}%)`;
+        let color = `hsl(${(i*40)%360},${90-3*i}%,${50+2*i}%)`;
 
         // We describe a slice with a <path> element. Note createElementNS().
         let slice = document.createElementNS(svg, "path");
 
-        
+        // Now set attributes on the <path> element.
+        slice.setAttribute("d", path);              // Set the path for this slice
+        slice.setAttribute("fill", color);          // Set slice color
+        slice.setAttribute("stroke", "black");      // Outline slice in black
+        slice.setAttribute("stroke-width", "1");    // 1 CSS pixel thick
+        chart.append(slice);                        // Add slice to chart
+
+        // Now draw a little matching square for the key.
+        let icon = document.createElementNS(svg, "rect");
+        icon.setAttribute("x", lx);                 // Position the square
+        icon.setAttribute("y", ly + 30*i);
+        icon.setAttribute("width", 20);             // Size the square
+        icon.setAttribute("height", 20);
+        icon.setAttribute("fill", color);           // Same fill color as slice
+        icon.setAttribute("stroke", "black");       // Same outline, too.
+        icon.setAttribute("stroke-width", "1");
+        chart.append(icon);                         // Add to the chart
+
+
+        // And add a label to the right of the rectangle
+        let label = document.createElementNS(svg, "text");
+        label.setAttribute("x", lx + 30);
+        label.setAttribute("y", ly + 30*i+16);
+        label.append(`${labels[i]} ${value}`);
+        chart.append(label);
       });
 
+      return chart;
+
     }
+
+
+    document.querySelector("#chart").append(pieChart({
+      width: 640, height:400,
+      cx: 200, cy: 200, r: 180,
+      lx: 400, ly: 10,
+      data: {
+        "JavaScript": 71.5,
+        "Java": 45.4,
+        "Bash/Shell": 40.4,
+        "Python": 37.9,
+        "C#": 35.3,
+        "PHP": 31.4,
+        "C++": 24.6,
+        "C": 22.1,
+        "TypeScript": 18.3,
+        "Ruby": 10.3,
+        "Swift": 8.3,
+        "Objective-C": 7.3,
+        "Go": 7.2,
+      }
+    }));
 
   </script>
 </body>
