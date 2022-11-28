@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Drawing a pie chart with JavaScript and SVG</title>
+</head>
+
+<body>
+
+  <canvas id="canvas" width="500" height="500"></canvas>
+
+  <script>
+    canvas = document.querySelector("#canvas");
+    c = canvas.getContext("2d");
+    c.beginPath();
+    c.moveTo(100, 100);
+    c.lineTo(200, 200);
+    c.lineTo(100, 200);
+    
+    c.moveTo(300, 100);
+    c.lineTo(300, 200);
+
+    c.fill();
+    c.stroke();
+
+
+  </script>
+</body>
+
+
+</html>
