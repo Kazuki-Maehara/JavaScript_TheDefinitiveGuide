@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Drawing a pie chart with JavaScript and SVG</title>
+</head>
+
+<body>
+
+  <canvas id="canvas" width="500" height="500"></canvas>
+
+  <script>
+    // Define a regular polygon with n sides, centered at (x,y) with radius r.
+    // The vertices are equally spaced along the circumference of a circle.
+    // Put the first vertex straight up or at the specified angle.
+    // Rotate clockwise, unless the last argument is true.
+    function polygon(c, n, x, y, r, angle=0, counterclockwise=false){
+      c.moveTo(
+        x + r*Math.sin(angle),    // Begin a new subpath at the first vertex
+        y - r*Math.cos(angle)     // Use trigonometry to compute position
+      );
+      let delta = 2 *Math.PI/n;
+      for(let i = 1; i < n; i++) {
+        angle += counterclockwise?-delta:delta;
+        c.lineTo(
+          x + r*Math.sin(angle),
+          y - r*Math.cos(angle)
+        );
+      }
+      c.closePath();
+    }
+
+  </script>
+</body>
+
+
+</html>
