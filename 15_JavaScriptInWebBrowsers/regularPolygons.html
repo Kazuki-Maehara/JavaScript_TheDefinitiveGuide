@@ -21,14 +21,35 @@
       );
       let delta = 2 *Math.PI/n;
       for(let i = 1; i < n; i++) {
-        angle += counterclockwise?-delta:delta;
-        c.lineTo(
+        angle += counterclockwise?-delta:delta;  // Adjust angle
+        c.lineTo(                                // Add line to next vertex
           x + r*Math.sin(angle),
           y - r*Math.cos(angle)
         );
       }
-      c.closePath();
+      c.closePath();            // Connect last vertex back to the first
     }
+
+    // Assume there is just one canvas, and get its context object to draw with.
+    let c = document.querySelector("canvas").getContext("2d");
+
+    // Start a new path and add polygon subpaths.
+    c.beginPath();
+    polygon(c, 3, 50, 70, 50);                    // Triangle
+    polygon(c, 4, 150, 60, 50, Math.PI/4);        // Square
+    polygon(c, 5, 255, 55, 50);                   // Pentagon
+    polygon(c, 6, 365, 53, 50, Math.PI/6);        // Hexagon
+    polygon(c, 4, 365, 53, 20, Math.PI/4, true);  // Small square inside the hexagon
+
+    // Set some properties that control how the graphics will look.
+    c.fillStyle = "#ccc";     // Light gray interiors
+    c.strokeStyle = "#008";   // outlined with dark blue lines
+    c.lineWidth = 5;          // Five pixels wide.
+
+    // Now draw all the polygons (each in its own subpath) with these calls.
+    c.fill();    // Fill the shapes
+    c.stroke();  // And stroke their outlines.
+
 
   </script>
 </body>
