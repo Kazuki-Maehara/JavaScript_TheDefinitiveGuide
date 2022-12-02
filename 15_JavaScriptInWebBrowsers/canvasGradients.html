@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Drawing a pie chart with JavaScript and SVG</title>
+</head>
+
+<body>
+
+  <canvas id="canvas" width="500" height="500"></canvas>
+
+  <script>
+
+    // Define a regular polygon with n sides, centered at (x,y) with radius r.
+    // The vertices are equally spaced along the circumference of a circle.
+    // Put the first vertex straight up or at the specified angle.
+    // Rotate clockwise, unless the last argument is true.
+    function polygon(c, n, x, y, r, angle=0, counterclockwise=false){
+      c.moveTo(
+        x + r*Math.sin(angle),    // Begin a new subpath at the first vertex
+        y - r*Math.cos(angle)     // Use trigonometry to compute position
+      );
+      let delta = 2 *Math.PI/n;
+      for(let i = 1; i < n; i++) {
+        angle += counterclockwise?-delta:delta;  // Adjust angle
+        c.lineTo(                                // Add line to next vertex
+          x + r*Math.sin(angle),
+          y - r*Math.cos(angle)
+        );
+      }
+      c.closePath();            // Connect last vertex back to the first
+    }
+
+
+    let c = document.querySelector("canvas").getContext("2d");
+
+    // Start a new path and add polygon subpaths.
+    c.beginPath();
+    polygon(c, 3, 50, 70, 50);                    // Triangle
+    polygon(c, 4, 150, 60, 50, Math.PI/4);        // Square
+    polygon(c, 5, 255, 55, 50);                   // Pentagon
+    polygon(c, 6, 365, 53, 50, Math.PI/6);        // Hexagon
+    polygon(c, 4, 365, 53, 20, Math.PI/4, true);  // Small square inside the hexagon
+
+    // A linear gradient, diagonally across the canva (assuming no transforms)
+    let bgfade = c.createLinearGradient(0,0,500,500);
+    bgfade.addColorStop(0.0, "#88f");   // Start with light blue in upper left.
+    bgfade.addColorStop(1.0, "#fff");   // Fade to white in lower right.
+
+    // A gradient between two concentric circles. Transparent in the middle
+    // fading to translucent gray and then back to transparent.
+    let donut = c.createRadialGradient(250,250,50 ,250,250,200);
+    donut.addColorStop(0.0, "transparent");           // Transparent
+    donut.addColorStop(0.7, "rgba(100,100,100, .9)"); // Translucent gray
+    donut.addColorStop(1.0, "rgba(0,0,0,0)");        // Tranparent again
+
+    c.fillStyle = bgfade;
+    c.strokeStyle = donut;
+    c.lineWidth = 5;
+
+    c.fill();
+    c.stroke();
+  </script>
+</body>
+
+
+</html>
