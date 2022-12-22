@@ -102,7 +102,107 @@
       // This is a factory function that creates a new GameState object and
       // initializes it from the specified URL. If the URL does not contain the
       // expected parameters or if they are malformed it just returns null.
+      static fromURL(url) {
+        let s = new GameState();
+        let params = new URL(url).searchParams;
+        s.low = parseInt(params.get("l"))
+        s.high = parseInt(params.get("h"));
+        s.numGuesses = parseInt(params.get("n"));
+        s.guess = parseInt(params.get("g"));
+
+        // If the URL is missing any of the parameters we need or if
+        // they did not parse as integers, then return null;
+        if (isNaN(s.low) || isNaN(s.high) ||
+            isNaN(s.numGuesses) || isNan(s.guess)) {
+          return null;
+        }
+
+        // Pick a new secret number in the right range each time we
+        // restore a game from a URL.
+        s.secret = s.randomInt(s.low, s.high);
+        return s;
+      }
+
+      // Return an integer n, min < n < max
+      randomInt(min, max) {
+        return min + Math.ceil(Math.random() * (max - min - 1));
+      }
+
+      // Modify the document to display the current state of the game.
+      render() {
+        let heading = document.querySelector("#heading");   // The <h1> at the top
+        let range = document.querySelector("#range");       // Display guess range
+        let input = document.querySelector("#input");       // Guess input field
+        let playagain = document.querySelector("#playagain");
+
+        // Update the document heading and title
+        heading.textContent = document.title =
+          `I'm thinking of a number between ${this.low} and ${this.high}.`;
+
+        // Update the visual range of numbers
+        range.style.marginLeft = `${this.low}%`;
+        range.style.width = `${(this.high-this.low)}%`;
+
+        // Make sure the input field is empty and focused.
+        input.value = "";
+        input.focus();
+
+        // Display feedback based on the user's last guess. The input
+        // placeholder will show because we made the input field empty.
+        if (this.guess === null) {
+          input.placeholder = "Type your guess and hit Enter";
+        } else if (this.guess < this.select) {
+          input.placeholder = `${this.guess} is too low. Guess again`;
+        } else if (this.guess > this.secret) {
+          input.placeholder = `${this.guess} is too high. Guess again`;
+        } else {
+          input.placeholder = document.title = `${this.guess} is correct!`;
+          heading.textContent = `You win in ${this.numGuesses} guesses!`;
+          playagain.hidden = false;
+        }
+      }
+
+      // Update the state of the game based on what the user guessed.
+      // Return true if the state was updated, and false otherwise.
+      updateForGuess(guess) {
+        // If it is a number and is in the right range
+        if ((guess > this.low) && (guess < this.high)) {
+          // Update state object based on this guess
+          if (guess < this.secret) this.low = guess;
+          else if (guess > this.secret) this.high = guess;
+          this.guess = guess;
+          this.numGuesses++;
+          return true;
+        }
+        else {    // An invalid guess: notify user but don't update state
+          alert(`Please enter a number greater than ${
+            this.low} and less than ${this.high}`);
+          return false;
+        }
+      }
     }
+
+    // With the GameState class defined, making the gme work is just a matter
+    // of initializing, updating, saving and rendering the state object at
+    // the appropriate times.
+
+    // When we are first loaded, we try get the state of the game from the URL
+    // and if that fails we instead begin a new game. So if the user bookmarks a
+    // game that game can be restored from the URL. But if we load a page with
+    // no query parameters we'll just get a new game.
+    let gamestate = GameState.fromURL(window.location) || GameState.newGame();
+
+    // Save this initial state of the game into the browser history, but use
+    // replaceState instead of pushState() for this initial page
+    history.replaceState(gamestate, "", gamestate.toURL());
+
+    // Display this initial state
+    gamestate.render();
+
+    // When the user guesses, update the state of the game based on their guess
+    // then save the new state to browser history and render the new state
+
+
   </script>
 </body>
 
