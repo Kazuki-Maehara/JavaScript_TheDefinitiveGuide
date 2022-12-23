@@ -19,13 +19,12 @@
     #container {
       border: solid black 1px;
       height: 1em;
-      witdh: 80%;
+      width: 80%;
     }
 
     #range {
       background-color: green;
       margin-left: 0%;
-      height: 1em;
       height: 1em;
       width: 100%;
     }
@@ -67,7 +66,7 @@
         s.secret = s.randomInt(0, 100);     // An integer: 0 < n < 100;
         s.low = 0;                          // Guesses must be greater than this
         s.high = 100;                       // Guesses must be less than this
-        s.numberGuesses = 0;                // How many guesses have been made
+        s.numGuesses = 0;                // How many guesses have been made
         s.guess = null;                     // What the last guess was
         return s;
       }
@@ -113,7 +112,7 @@
         // If the URL is missing any of the parameters we need or if
         // they did not parse as integers, then return null;
         if (isNaN(s.low) || isNaN(s.high) ||
-            isNaN(s.numGuesses) || isNan(s.guess)) {
+            isNaN(s.numGuesses) || isNaN(s.guess)) {
           return null;
         }
 
@@ -151,7 +150,7 @@
         // placeholder will show because we made the input field empty.
         if (this.guess === null) {
           input.placeholder = "Type your guess and hit Enter";
-        } else if (this.guess < this.select) {
+        } else if (this.guess < this.secret) {
           input.placeholder = `${this.guess} is too low. Guess again`;
         } else if (this.guess > this.secret) {
           input.placeholder = `${this.guess} is too high. Guess again`;
@@ -201,8 +200,20 @@
 
     // When the user guesses, update the state of the game based on their guess
     // then save the new state to browser history and render the new state
+    document.querySelector("#input").onchange = (event) => {
+      if (gamestate.updateForGuess(parseInt(event.target.value))) {
+        history.pushState(gamestate, "", gamestate.toURL());
+      }
+      gamestate.render();
+    };
 
-
+    // If the user goes back or forward in history, we'll get a popstate event
+    // on the window object with a copy of the state object we saved with
+    // pushState. When that happens, render the new state.
+    window.onpopstate = (event) => {
+      gamestate = GameState.fromStateObject(event.state);   // Restore the state
+      gamestate.render();                                   // and display it
+    };
   </script>
 </body>
 
