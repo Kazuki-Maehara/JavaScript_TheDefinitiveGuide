@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>localStorage and sessionStorage</title>
+  <meta chaset="utf-8">
+</head>
+
+<body>
+  <div id="print">
+  </div>
+  <script>
+
+  // Store the name/value pair as a cookie, encoding the value with
+  // encodeURIComponent() in order to escape semicolons, commas, and spaces.
+  // If daysToLive is a number, set the max-age attribute so that the cookie
+  // expires after the specified number of days. Pass 0 to delete a cookie.
+  function setCookie(name, value, daysToLive=null) {
+    let cookie = `${name}=${encodeURIComponent(value)}`;
+    if (daysToLive !== null) {
+      cookie += `; max-age=${daysToLive*60*60*24}`;
+    }
+    console.log(cookie)
+    document.cookie = cookie;
+  }
+
+  // Return the document's cookies as a Map object.
+  // Assume that cookie values are encoded with encodeURIComponent().
+  function getCookies() {
+    let cookies = new Map();        // The object we will return
+    let all = document.cookie;      // Get all cookies in one big string
+    let list = all.split("; ");     // Split into individual name/value pairs
+    for (let cookie of list) {      // For each cookie in that list
+      if (!cookie.includes("=")) continue;    // Skip if there is no "=" sign
+      let p = cookie.indexOf("=");            // Find the first = sign
+      let name = cookie.substring(0, p);      // Get cookie name
+      let value = cookie.substring(p+1);      // Get cookie value
+      value = decodeURIComponent(value);      // Decode the value
+      cookies.set(name, value);               // Remember cookie name and value
+    }
+    return cookies;
+  }
+
+  </script>
+</body>
+
+</html>
