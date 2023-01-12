@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>localStorage and sessionStorage</title>
+  <meta chaset="utf-8">
+</head>
+
+<body>
+  <div id="print">
+    </div>
+  <script>
+    let name = localStorage.username;       // Query a stored value.
+    if (!name) {
+      name = prompt("What is your name?");  // Ask the user a question.
+      localStorage.username = name;         // Store the user's response.
+    }
+
+    let print_area = document.getElementById("print");
+    let para = document.createElement("p");
+    para.textContent = name;
+    print_area.appendChild(para);
+    localStorage.removeItem("username");
+
+    // If you store a number, it is automatically converted to a string.
+    // Don't forget to parse it when retrieving it from storage.
+    localStorage.x = 10;
+    let x = parseInt(localStorage.x);
+    console.log(x);
+    console.log(typeof x);
+
+    // Convert a Date to a string when setting, and parse it when getting.
+    localStorage.lastRead = (new Date()).toUTCString();
+    let lastRead = new Date(Date.parse(localStorage.lastRead));
+    console.log(lastRead);
+
+    // JSON makes a convenient encoding for any primitive or data structure.
+    let data = {
+      key: "key",
+      value: "value",
+
+    };
+    localStorage.data = JSON.stringify(data);    // Encode and store
+    data = JSON.parse(localStorage.data);   // Retrieve and decode.
+    console.log(data);
+
+
+  </script>
+</body>
+
+</html>
