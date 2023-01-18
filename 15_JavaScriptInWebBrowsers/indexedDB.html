@@ -84,7 +84,55 @@
         });
     }
 
-    Given a zip code, 
+    // Given a zip code, use the IndexedDB API to asynchronously look up the city
+    // with taht zip code, and pass it to the specified callback, or pass null if
+    // no city is found.
+    function lookupCity(zip, callback) {
+      widhDB(db => {
+        // Create a read-only transaction object for this query. The
+        // argument is an aray of object stores we will need to use.
+        let transaction = db.transaction(["zipcodes"]);
+
+        // Get the object store from the transaction
+        let zipcodes = transaction.objectStore("zipcodes");
+
+        // Now request the object that matches the specified zipcode key.
+        // The lines above were synchronous, but this one is async.
+        let request = zipcodes.get(zip);
+        request.onerror = console.error;    // Log errors
+        request.onsuccess = () => {         // Or call this function on success
+          let record = request.result;      // This is the query result
+          if (record) {   // If we found a match, pass it to the callback
+            callback(`${record.city}, ${record.state}`);
+          } else {        // Otherwise, tell the callback that we failed
+            callback(null);
+          }
+
+        };
+      });
+    }
+
+
+    // Given the name of a city, use the IndexedDB API to asynchronousl
+    // look up all zip code records for all cities (in any state) that have
+    // that (case-sensitive) name.
+    function lookupZipcodes(cty, callback) {
+      withDB(db => {
+        // As above, we create a transaction and get the object store
+        let transaction = db.transaction(["zipcodes"]);
+        let store = transaction.objectStore("zipcodes");
+
+        // This time we also get the city index of the object store
+        let index = store.index("cities");
+
+        // Ask for all matching records in the index with the specified
+        // city name, and when we get them we pass them to the callback.
+        // If we expected more results, we might use openCursor() instead.
+        let request = index.getAll(city);
+        request.onerror = console.error;
+        request.onsuccess = () => { callback(requet.result); };
+      });
+    }
 
   </script>
 </body>
